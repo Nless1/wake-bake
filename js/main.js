@@ -1,4 +1,7 @@
 (function() {
+
+// burger
+
   document.addEventListener('click', burgerInit)
 
   function burgerInit(e){
@@ -10,6 +13,8 @@
 
     document.body.classList.toggle('body--opened-menu')
   }
+
+// gift modal
 
   const modalBtn = document.querySelector('.modal__close')
 
@@ -30,4 +35,62 @@
     document.body.classList.remove('body--opened-modal')
     }
   }
+
+// tabs
+
+const tabControls = document.querySelector('.tab-controls')
+
+tabControls.addEventListener('click', toggleTab)
+
+function toggleTab(e){
+
+  const tabControl = e.target.closest('.tab-controls__link')
+  
+  e.preventDefault()
+
+  if(!tabControl) return
+  if(e.target.closest('.tab-controls__link--focus')) return
+
+  const tabContentID = tabControl.getAttribute('href')
+  const tabContent = document.querySelector(tabContentID)
+  const focusContent = document.querySelector('.tab-content--show')
+  const focusControl = document.querySelector('.tab-controls__link--focus')
+
+  focusContent.classList.remove('tab-content--show')
+  tabContent.classList.add('tab-content--show')
+
+  focusControl.classList.remove('tab-controls__link--focus')
+  tabControl.classList.add('tab-controls__link--focus')
+}
+
+// accordion
+
+const accordionLists = document.querySelectorAll('.accordion-list')
+
+accordionLists.forEach(el =>{
+
+  el.addEventListener('click', (e) => {
+    
+    const accordionList = e.currentTarget
+    const accordionOpenedItem = accordionList.querySelector('.accordion-list__item--opened')
+    const accordionOpenedContent = accordionList.querySelector('.accordion-list__item--opened .accordion-list__content')
+
+    const accordionControl = e.target.closest('.accordion-list__control')
+    if(!accordionControl) return
+    const accordionItem = accordionControl.parentElement;
+    const accordionContent = accordionControl.nextElementSibling;
+
+    if(accordionOpenedItem && accordionItem != accordionOpenedItem) {
+      accordionOpenedItem.classList.remove('accordion-list__item--opened')
+      accordionOpenedContent.style.maxHeight = null
+    }
+    accordionItem.classList.toggle('accordion-list__item--opened')
+    
+    if(accordionItem.classList.contains('accordion-list__item--opened')) {
+      accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+    } else {
+      accordionContent.style.maxHeight = null;
+    }
+  })
+})
 })()
